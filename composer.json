@@ -1,0 +1,22 @@
+{
+    "name": "d3yii2/d3edi",
+    "description": "EDI",
+    "type": "library",
+    "keywords": ["yii2"],
+    "authors": [
+        {
+            "name": "Uldis Nelsons",
+            "email": "uldis@weberp.lv"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "sabas/edifact": "dev-master",
+        "php-edifact/edifact-mapping": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "d3yii2\\d3edi\\": ""
+        }
+    }
+}
