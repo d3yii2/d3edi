@@ -27,7 +27,7 @@
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `code` char(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1</sql_create_table>
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
 </table>
 <table name="edi_message" view="colnames">
 <left>525</left>
@@ -54,7 +54,7 @@
   CONSTRAINT `edi_message_ibfk_message_type` FOREIGN KEY (`message_type_id`) REFERENCES `edi_message_type` (`id`),
   CONSTRAINT `edi_message_ibfk_recipient` FOREIGN KEY (`interchange_recipient_company_id`) REFERENCES `edi_company` (`id`),
   CONSTRAINT `edi_message_ibfk_sender` FOREIGN KEY (`interchange_sender_company_id`) REFERENCES `edi_company` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1</sql_create_table>
 </table>
 <table name="edi_message_ref" view="colnames">
 <left>309</left>
@@ -83,7 +83,7 @@
   `code` varchar(35) NOT NULL,
   `ref_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1</sql_create_table>
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
 </table>
 </tables>
 </canvas>

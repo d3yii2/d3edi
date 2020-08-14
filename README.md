@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-$ composer require depo3/edi "*"
+$ composer require d3yii2/d3edi "*"
 ```
 
 or add
 
 ```
-"depo3/edi": "*"
+"d3yii2/d3edi": "*"
 ```
 
 to the `require` section of your `composer.json` file.

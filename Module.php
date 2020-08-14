@@ -1,6 +1,6 @@
 <?php
 
-namespace depo3\edi;
+namespace d3yii2\d3edi;
 
 use Yii;
 use d3system\yii2\base\D3Module;
