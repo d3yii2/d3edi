@@ -51,8 +51,8 @@ class TestController extends D3CommandController
 
     public function actionAnalyser(): int
     {
-        //$file = D3FileHelper::getRuntimeFilePath('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.edi');
-        $file = D3FileHelper::getRuntimeFilePath('edi','27566.txt');
+        $file = D3FileHelper::getRuntimeFilePath('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.edi');
+        //$file = D3FileHelper::getRuntimeFilePath('edi','27566.txt');
         $parser = new Parser($file);
         $parsed = $parser->get();
         $segments = $parser->getRawSegments();
@@ -63,7 +63,7 @@ class TestController extends D3CommandController
         $analyser->loadCodesXml($mapping->getCodes());
         $analyser->directory = 'D95B';
         $result = $analyser->process($parsed, $segments);
-        D3FileHelper::filePuntContentInRuntime('edi','analysed.txt',$result);
+        D3FileHelper::filePutContentInRuntime('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.txt',$result);
 
         return ExitCode::OK;
     }
