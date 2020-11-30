@@ -23,6 +23,7 @@ use d3system\behaviors\D3DateTimeBehavior;
  * @property string $data
  * @property string $status
  * @property string $errror
+ * @property string $file_name
  *
  * @property \d3yii2\d3edi\models\EdiMessageRef[] $ediMessageRefs
  * @property \d3yii2\d3edi\models\EdiCompany $interchangeRecipientCompany
@@ -73,6 +74,7 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            'required' => [['type', 'message_type_id', 'status'], 'required'],
             'enum-type' => ['type', 'in', 'range' => [
                     self::TYPE_IN,
                     self::TYPE_OUT,
@@ -87,10 +89,10 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
             'tinyint Unsigned' => [['interchange_sender_company_id','interchange_recipient_company_id','message_type_id'],'integer' ,'min' => 0 ,'max' => 255],
             'integer Unsigned' => [['id'],'integer' ,'min' => 0 ,'max' => 4294967295],
             [['read_time', 'preperation_time'], 'safe'],
-            [['type', 'message_type_id', 'status'], 'required'],
             [['type', 'data', 'status', 'errror'], 'string'],
             [['messageReferenceNumber'], 'string', 'max' => 14],
             [['messageRelease'], 'string', 'max' => 3],
+            [['file_name'], 'string', 'max' => 255],
             [['message_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => \d3yii2\d3edi\models\EdiMessageType::className(), 'targetAttribute' => ['message_type_id' => 'id']],
             [['interchange_recipient_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => \d3yii2\d3edi\models\EdiCompany::className(), 'targetAttribute' => ['interchange_recipient_company_id' => 'id']],
             [['interchange_sender_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => \d3yii2\d3edi\models\EdiCompany::className(), 'targetAttribute' => ['interchange_sender_company_id' => 'id']],
@@ -116,6 +118,7 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
             'data' => 'Data',
             'status' => 'Status',
             'errror' => 'Errror',
+            'file_name' => 'File Name',
         ];
     }
 

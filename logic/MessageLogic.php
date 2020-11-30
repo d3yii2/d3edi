@@ -14,14 +14,19 @@ class MessageLogic
 {
 
 
-    public function saveIn(string $ediMessage): void
+    public function saveIn(string $ediMessage, string $fileName): void
     {
         $model = new EdiMessage();
         $model->read_time = date('Y-m-d H:i:s');
         $model->type = EdiMessage::TYPE_IN;
         $model->data = $ediMessage;
+        if($fileName){
+            $model->file_name = $fileName;
+        }
         $r = new Reader($ediMessage);
-        $model->interchange_sender_company_id = EdiCompanyDictionary::getIdByName($r->readUNBInterchangeSender());
+        if($interchangeSender = $r->readUNBInterchangeSender()) {
+            $model->interchange_sender_company_id = EdiCompanyDictionary::getIdByName($interchangeSender);
+        }
         $model->interchange_recipient_company_id = EdiCompanyDictionary::getIdByName($r->readUNBInterchangeRecipient());
         $model->preperation_time = $r->readUNBDateTimeOfPreparation();
         $model->messageReferenceNumber = $r->readUNHmessageNumber();

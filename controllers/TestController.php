@@ -6,6 +6,7 @@ use d3system\commands\D3CommandController;
 use d3system\helpers\D3FileHelper;
 use d3yii2\d3edi\logic\MessageLogic;
 use EDI\Analyser;
+use EDI\Analyser2;
 use EDI\Interpreter;
 use EDI\Mapping\MappingProvider;
 use EDI\Parser;
@@ -16,12 +17,13 @@ class TestController extends D3CommandController
 
     /**
      * default action
+     * @param string $fileName
      * @return int
      */
-    public function actionIndex(): int
+    public function actionIndex(string $fileName): int
     {
         //$file = D3FileHelper::getRuntimeFilePath('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.edi');
-        $file = D3FileHelper::getRuntimeFilePath('edi','out.edi');
+        $file = D3FileHelper::getRuntimeFilePath('edi',$fileName);
         $p = new Parser($file);
         $edi = $p->get();
 
@@ -49,28 +51,29 @@ class TestController extends D3CommandController
         return ExitCode::OK;
     }
 
-    public function actionAnalyser(): int
+    public function actionAnalyser(string $fileName): int
     {
-        $file = D3FileHelper::getRuntimeFilePath('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.edi');
+        $file = D3FileHelper::getRuntimeFilePath('edi',$fileName);
         //$file = D3FileHelper::getRuntimeFilePath('edi','27566.txt');
         $parser = new Parser($file);
         $parsed = $parser->get();
         $segments = $parser->getRawSegments();
-        $analyser = new Analyser();
-        $mapping = new MappingProvider('D95B');
-        $analyser->loadSegmentsXml($mapping->getSegments());
-        $analyser->loadMessageXml($mapping->getMessage('coparn'));
-        $analyser->loadCodesXml($mapping->getCodes());
-        $analyser->directory = 'D95B';
+        $analyser = new Analyser2('D95B',D3FileHelper::getRuntimeDirectoryPath('ediDoc'));
+//        $mapping = new MappingProvider('D95B');
+//        $analyser->loadSegmentsXml($mapping->getSegments());
+//        $analyser->loadMessageXml($mapping->getMessage('coparn'));
+//        $analyser->loadCodesXml($mapping->getCodes());
+//        $analyser->directory = 'D95B';
         $result = $analyser->process($parsed, $segments);
-        D3FileHelper::filePutContentInRuntime('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.txt',$result);
+        $saveFileName = substr_replace($fileName , 'txt', strrpos($fileName , '.') +1);
+        D3FileHelper::filePutContentInRuntime('edi',$saveFileName,$result);
 
         return ExitCode::OK;
     }
 
-    public function actionLoad()
+    public function actionLoad(string $fileName)
     {
-        $message = D3FileHelper::fileGetContentFromRuntime('edi','MAEU.LVRIXBCT.COPARN.1412605.198506621261398674.edi');
+        $message = D3FileHelper::fileGetContentFromRuntime('edi',$fileName);
         $ml = new MessageLogic();
         $ml->saveIn($message);
     }
