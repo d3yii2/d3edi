@@ -43,4 +43,15 @@ class EdiMessage extends BaseEdiMessage
             throw new D3ActiveRecordException($this);
         }
     }
+    
+    /**
+     * @return EdiMessage[]
+     */
+    public static function getUnprocessed($columns = ['id', 'preperation_time', 'status', 'errror'])
+    {
+        $res = self::find()
+            ->select($columns)
+            ->where('status !=:status',  ['status' => parent::STATUS_PROCESSED]);
+        return $res->all();
+    }
 }
