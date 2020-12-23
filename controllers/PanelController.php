@@ -45,7 +45,7 @@ class PanelController extends Controller
     public function actionMessage(string $action = '')
     {
         $tableData = [
-            'title' => Yii::t('d3edi', 'EDI Message'),
+            'title' => Yii::t('depoedi', 'EDI Message'),
             'columns' => [
                 ['attribute' => 'id', 'header' => EdiMessage::instance()->getAttributeLabel('id')],
                 ['attribute' => 'preperation_time', 'header' => EdiMessage::instance()->getAttributeLabel('preperation_time'), 'format' => 'date'],
