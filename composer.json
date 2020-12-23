@@ -12,7 +12,8 @@
     "require": {
         "yiisoft/yii2": "*",
         "sabas/edifact": "dev-master",
-        "php-edifact/edifact-mapping": "dev-master"
+        "php-edifact/edifact-mapping": "dev-master",
+        "unyii2/yii2-panel": "dev-master"
     },
     "autoload": {
         "psr-4": {

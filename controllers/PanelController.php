@@ -3,8 +3,9 @@
 namespace d3yii2\d3edi\controllers;
 
 use d3yii2\d3edi\models\EdiMessage;
+use d3yii2\d3edi\Module;
 use depo3\edi\accessRights\Depo3EdiFullUserRole;
-use ea\app\controllers\LayoutController;
+use unyii2\yii2panel\Controller;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use Yii;
@@ -12,8 +13,9 @@ use Yii;
 /**
  * Class PanelController
  * @package depo3\edi\controllers
+ * @property Module $module
  */
-class PanelController extends LayoutController
+class PanelController extends Controller
 {
     /**
      * @inheritdoc
@@ -29,9 +31,7 @@ class PanelController extends LayoutController
                         'actions' => [
                             'message',
                         ],
-                        'roles' => [
-                            Depo3EdiFullUserRole::NAME,
-                        ],
+                        'roles' => $this->module->rulesMessageRoles??['@'],
                     ],
                 ],
             ],
