@@ -31,7 +31,7 @@ class PanelController extends Controller
                         'actions' => [
                             'message',
                         ],
-                        'roles' => $this->module->rulesMessageRoles??['@'],
+                        'roles' => $this->module->accessRulesMessageRoles??['@'],
                     ],
                 ],
             ],
