@@ -10,7 +10,9 @@ use EDI\Analyser2;
 use EDI\Interpreter;
 use EDI\Mapping\MappingProvider;
 use EDI\Parser;
+use EDI\Reader;
 use yii\console\ExitCode;
+use yii\helpers\VarDumper;
 
 class TestController extends D3CommandController
 {
@@ -51,23 +53,39 @@ class TestController extends D3CommandController
         return ExitCode::OK;
     }
 
-    public function actionAnalyser(string $fileName): int
+    public function actionAnalyser(string $fileName, string $runtimeDir = 'edi'): int
     {
-        $file = D3FileHelper::getRuntimeFilePath('edi',$fileName);
-        //$file = D3FileHelper::getRuntimeFilePath('edi','27566.txt');
+        $file = D3FileHelper::getRuntimeFilePath($runtimeDir,$fileName);
+
         $parser = new Parser($file);
         $parsed = $parser->get();
         $segments = $parser->getRawSegments();
         $analyser = new Analyser2('D95B',D3FileHelper::getRuntimeDirectoryPath('ediDoc'));
-//        $mapping = new MappingProvider('D95B');
-//        $analyser->loadSegmentsXml($mapping->getSegments());
-//        $analyser->loadMessageXml($mapping->getMessage('coparn'));
-//        $analyser->loadCodesXml($mapping->getCodes());
-//        $analyser->directory = 'D95B';
         $result = $analyser->process($parsed, $segments);
         $saveFileName = substr_replace($fileName , 'txt', strrpos($fileName , '.') +1);
-        D3FileHelper::filePutContentInRuntime('edi',$saveFileName,$result);
+        D3FileHelper::filePutContentInRuntime($runtimeDir,$saveFileName,$result);
 
+        return ExitCode::OK;
+    }
+//yii edi/test/to-csv LVRIXAB000000078.EDI msc BGM RFF DTN EQD
+    public function actionToCsv(
+        string $fileName,
+        string $runtimeDir = 'edi',
+        string $before,
+        string $start,
+        string $end,
+        string $after
+    ): int
+    {
+        $file = D3FileHelper::getRuntimeFilePath($runtimeDir,$fileName);
+
+        $reader = new Reader($file);
+        //$groups = $reader->readGroups('BGM','RFF','DTN','EQD');
+        $groups = $reader->readGroups($before,$start,$end,$after);
+        echo VarDumper::dumpAsString($groups);
+
+//        $groups = $reader->readGroups('DTM','EQD','FTX','CNT');
+//        echo VarDumper::dumpAsString($groups);
         return ExitCode::OK;
     }
 
