@@ -12,6 +12,7 @@ use d3system\behaviors\D3DateTimeBehavior;
  * This is the base-model class for table "edi_message".
  *
  * @property integer $id
+ * @property string $component
  * @property string $read_time
  * @property string $type
  * @property integer $interchange_sender_company_id
@@ -90,6 +91,7 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
             'integer Unsigned' => [['id'],'integer' ,'min' => 0 ,'max' => 4294967295],
             [['read_time', 'preperation_time'], 'safe'],
             [['type', 'data', 'status', 'errror'], 'string'],
+            [['component'], 'string', 'max' => 50],
             [['messageReferenceNumber'], 'string', 'max' => 14],
             [['messageRelease'], 'string', 'max' => 3],
             [['file_name'], 'string', 'max' => 255],
@@ -107,6 +109,7 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'component' => 'Component',
             'read_time' => 'Read Time',
             'type' => 'Type',
             'interchange_sender_company_id' => 'Interchange Sender Company ID',
@@ -187,8 +190,8 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     public static function optsType(): array
     {
         return [
-            self::TYPE_IN => 'type',
-            self::TYPE_OUT => 'type',
+            self::TYPE_IN => 'In',
+            self::TYPE_OUT => 'Out',
         ];
     }
 
@@ -213,9 +216,9 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     public static function optsStatus(): array
     {
         return [
-            self::STATUS_NEW => 'status',
-            self::STATUS_PROCESSED => 'status',
-            self::STATUS_ERROR => 'status',
+            self::STATUS_NEW => 'New',
+            self::STATUS_PROCESSED => 'Processed',
+            self::STATUS_ERROR => 'Error',
         ];
     }
     /**
@@ -228,12 +231,28 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     {
         return $this->type === self::TYPE_IN;
     }
+
+     /**
+     * @return void
+     */
+    public function setTypeIn(): void
+    {
+        $this->type = self::TYPE_IN;
+    }
     /**
      * @return bool
      */
     public function isTypeOut(): bool
     {
         return $this->type === self::TYPE_OUT;
+    }
+
+     /**
+     * @return void
+     */
+    public function setTypeOut(): void
+    {
+        $this->type = self::TYPE_OUT;
     }
     /**
      * @return bool
@@ -242,6 +261,14 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     {
         return $this->status === self::STATUS_NEW;
     }
+
+     /**
+     * @return void
+     */
+    public function setStatusNew(): void
+    {
+        $this->status = self::STATUS_NEW;
+    }
     /**
      * @return bool
      */
@@ -249,12 +276,28 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
     {
         return $this->status === self::STATUS_PROCESSED;
     }
+
+     /**
+     * @return void
+     */
+    public function setStatusProcessed(): void
+    {
+        $this->status = self::STATUS_PROCESSED;
+    }
     /**
      * @return bool
      */
     public function isStatusError(): bool
     {
         return $this->status === self::STATUS_ERROR;
+    }
+
+     /**
+     * @return void
+     */
+    public function setStatusError(): void
+    {
+        $this->status = self::STATUS_ERROR;
     }
 
 }

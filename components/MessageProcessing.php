@@ -171,23 +171,20 @@ class MessageProcessing extends Component
      *
      * @throws \yii\db\Exception
      */
-    public function loadEdi(): void
+    public function loadEdi(string $compnentName = null): void
     {
         $this->out('Load new files from SFTP to DB');
         $logic = new MessageLogic();
         FileHelper::createDirectory($this->localUploadInboundProcessedDir);
         foreach ($this->getNewFiles() as $fileName) {
             $this->out(' ' . basename($fileName));
-            if(!$transaction = \Yii::$app->db->beginTransaction()){
-                throw new \yii\db\Exception('Can not init transaction');
-            }
             $ediMessage = file_get_contents($fileName);
-            $r = new Reader($ediMessage);
-            foreach($r->splitByUnh() as $message) {
+            foreach(Reader::splitMultiMessage($ediMessage) as $message) {
+                if(!$transaction = \Yii::$app->db->beginTransaction()){
+                    throw new \yii\db\Exception('Can not init transaction');
+                }
                 try {
-
-                    $logic->saveIn($message, $this->getUpladInboundProcessedFilePath($fileName));
-                    $this->moveFileToProcessedDirectory($fileName);
+                    $logic->saveIn($message, $this->getUpladInboundProcessedFilePath($fileName),$compnentName);
                     $transaction->commit();
                     $this->out('  - loadded');
                 } catch (\Exception $e) {
@@ -195,9 +192,9 @@ class MessageProcessing extends Component
                     $this->out('Problem with EDI loading to DB: ' . $e->getMessage());
                     \Yii::error('Problem with EDI loading to DB: ' . $e->getMessage());
                     \Yii::error($e->getTraceAsString());
-
                 }
             }
+            $this->moveFileToProcessedDirectory($fileName);
         }
     }
 

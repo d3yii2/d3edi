@@ -19,9 +19,14 @@ class MessageLogic
      * @param string $fileName
      * @throws D3ActiveRecordException
      */
-    public function saveIn(string $ediMessage, string $fileName): void
+    public function saveIn(
+        string $ediMessage,
+        string $fileName,
+        string $compnentName = null
+    ): void
     {
         $model = new EdiMessage();
+        $model->component = $compnentName;
         $model->read_time = date('Y-m-d H:i:s');
         $model->type = EdiMessage::TYPE_IN;
         $model->data = $ediMessage;
