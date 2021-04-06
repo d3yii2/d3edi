@@ -31,7 +31,7 @@ class ProcessIncomingEdiController extends D3CommandController
         $processingCompnent = \Yii::$app->get($messageProcessingComponentName);
         $processingCompnent->connect($this);
         $processingCompnent->downloadFtp();
-        $processingCompnent->loadEdi();
+        $processingCompnent->loadEdi($messageProcessingComponentName);
         return ExitCode::OK;
     }
 
