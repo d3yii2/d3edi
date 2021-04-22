@@ -15,9 +15,15 @@ use yii\helpers\Json;
 class EdiMessage extends BaseEdiMessage
 {
 
+    /** @var Reader */
+    private $reader;
+
     public function readEdiMessage(): Reader
     {
-        return new Reader($this->data);
+        if($this->reader){
+            return $this->reader;
+        }
+        return $this->reader = new Reader($this->data);
     }
 
     public function saveProcessed($model): void
@@ -53,5 +59,11 @@ class EdiMessage extends BaseEdiMessage
             ->select($columns)
             ->where('status !=:status',  ['status' => parent::STATUS_PROCESSED]);
         return $res->all();
+    }
+
+    public function getBgmMessageFunctionCode(): ?string
+    {
+        $r = $this->readEdiMessage();
+        return $r->readEdiDataValue('BGM',3);
     }
 }
