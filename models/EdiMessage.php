@@ -4,7 +4,7 @@ namespace d3yii2\d3edi\models;
 
 use d3system\dictionaries\SysModelsDictionary;
 use d3system\exceptions\D3ActiveRecordException;
-use \d3yii2\d3edi\models\base\EdiMessage as BaseEdiMessage;
+use d3yii2\d3edi\models\base\EdiMessage as BaseEdiMessage;
 use depo3\edi\models\EdiMessageRef;
 use EDI\Reader;
 use yii\helpers\Json;
@@ -26,6 +26,9 @@ class EdiMessage extends BaseEdiMessage
         return $this->reader = new Reader($this->data);
     }
 
+    /**
+     * @throws \d3system\exceptions\D3ActiveRecordException
+     */
     public function saveProcessed($model): void
     {
         $ref = new EdiMessageRef();
@@ -41,6 +44,33 @@ class EdiMessage extends BaseEdiMessage
         }
     }
 
+    /**
+     * Delete from edi_messages_ref
+     * @param $model
+     * @throws \Throwable
+     * @throws \d3system\exceptions\D3ActiveRecordException
+     * @throws \yii\db\StaleObjectException
+     */
+    public static function deleteRef($model): void
+    {
+        foreach(EdiMessageRef::find()
+            ->where([
+                'sys_model_id' => SysModelsDictionary::getIdByClassName(get_class($model)),
+                'ref_record_id' => $model->id
+            ])
+            ->all() as $ref
+        ){
+            $ref->message->setStatusNew();
+            if(!$ref->message->save()){
+                throw new D3ActiveRecordException($ref->message);
+            }
+            $ref->delete();
+        }
+    }
+
+    /**
+     * @throws \d3system\exceptions\D3ActiveRecordException
+     */
     public function saveError($error): void
     {
         $this->status = self::STATUS_ERROR;
@@ -53,7 +83,7 @@ class EdiMessage extends BaseEdiMessage
     /**
      * @return EdiMessage[]
      */
-    public static function getUnprocessed($columns = ['id', 'preperation_time', 'status', 'errror'])
+    public static function getUnprocessed($columns = ['id', 'preperation_time', 'status', 'errror']): array
     {
         $res = self::find()
             ->select($columns)
