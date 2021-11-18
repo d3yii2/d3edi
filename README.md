@@ -94,4 +94,48 @@ class DepoEdiBooking extends BaseDepoEdiBooking
 
 ```
 
-## Examples
+### Panle for unprocessed messages
+
+ For showing unprocessed messages can use panel solution [Yii2Panel](https://github.com/unyii2/yii2-panel)
+ 
+#### add widget
+```php 
+echo \unyii2\yii2panel\PanelWidget::widget([
+    'name' => 'MyAllerts',
+]);
+```
+
+#### to module add parameter panels
+```php 
+class MyModule extends Module
+{
+    
+    /**
+     * @var array panels for PanelWidgets
+     */
+    public $panels;
+```
+
+#### in module config add widget
+```php 
+        'mymodule' => [
+            'class' => 'MyModule',
+            'panels' => [
+                'MyAllerts' =>
+                [
+                    [
+                        'route' => 'edi/panel/message',
+                     ]
+                 ]
+            ],
+        ],
+```
+
+#### in EDI module can set role for access to panel. Otherwise every authorised user has access to panle widget
+
+```php
+        'edi' => [
+            'class' => 'd3yii2\d3edi\Module',
+            'accessRulesMessageRoles' => ['Depo3EdiFull']
+        ],
+```
