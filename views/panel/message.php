@@ -1,14 +1,17 @@
 <?php
 
-use eaBlankonThema\assetbundles\layout\LayoutAsset;
-use eaBlankonThema\widget\ThTableSimple2;
+use yii\helpers\VarDumper;
 
-LayoutAsset::register($this);
 
 /**
- * @var \d3system\yii2\web\D3SystemView $this
  * @var array $tableData
  */
-?>
-<?= ThTableSimple2::widget($tableData);
+if (class_exists('eaBlankonThema\widget\ThTableSimple2')) {
+    echo eaBlankonThema\widget\ThTableSimple2\ThTableSimple2::widget($tableData);
+} else {
+    /**
+     * @todo an alternative display should be introduced
+     */
+    echo VarDumper::dumpAsString($tableData);
+}
 

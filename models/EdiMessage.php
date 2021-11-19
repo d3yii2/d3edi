@@ -5,7 +5,6 @@ namespace d3yii2\d3edi\models;
 use d3system\dictionaries\SysModelsDictionary;
 use d3system\exceptions\D3ActiveRecordException;
 use d3yii2\d3edi\models\base\EdiMessage as BaseEdiMessage;
-use depo3\edi\models\EdiMessageRef;
 use EDI\Reader;
 use yii\helpers\Json;
 

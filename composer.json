@@ -13,7 +13,9 @@
         "yiisoft/yii2": "*",
         "sabas/edifact": "dev-master",
         "php-edifact/edifact-mapping": "dev-master",
-        "unyii2/yii2-panel": "dev-master"
+        "unyii2/yii2-panel": "dev-master",
+        "d3yii2/d3system": "dev-master",
+        "phpseclib/phpseclib": "2.0.29"
     },
     "autoload": {
         "psr-4": {

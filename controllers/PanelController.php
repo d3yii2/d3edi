@@ -4,9 +4,7 @@ namespace d3yii2\d3edi\controllers;
 
 use d3yii2\d3edi\models\EdiMessage;
 use d3yii2\d3edi\Module;
-use depo3\edi\accessRights\Depo3EdiFullUserRole;
 use unyii2\yii2panel\Controller;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use Yii;
 

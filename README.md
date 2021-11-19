@@ -1,4 +1,4 @@
-#EDI
+# [EDIFACT messaging[(https://en.wikipedia.org/wiki/EDIFACT) 
 
 
 ## Features
@@ -6,9 +6,14 @@
  - Other processes process collected messages and registries
    * status processed and ref records
    * status error and error message 
-  
+
+## used packages 
+- [sabas/edifac](https://github.com/php-edifact/edifact) - Tools to process EDI messages in UN/EDIFACT format
+- [php-edifact/edifact-mapping](https://github.com/php-edifact/edifact-mapping) -  xml files for EDIFACT messages
+- [unyii2/yii2-panel](https://github.com/unyii2/yii2-panel) - panel controller and widget 
+
 ## DB Schema
-![DB Schema](/doc/DbSchema.png)
+![DB Schema](/doc/DbSchema.png) 
 
 
 ## Installation
