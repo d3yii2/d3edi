@@ -11,6 +11,9 @@ class EdiCompanyDictionary{
 
     private const CACHE_KEY_LIST = 'EdiCompanyDictionaryList';
 
+    /**
+     * @throws \d3system\exceptions\D3ActiveRecordException
+     */
     public static function getIdByName(string $code): int
     {
         $list = self::getList();

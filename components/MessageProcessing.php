@@ -170,6 +170,7 @@ class MessageProcessing extends Component
      *  - move to directory processed
      *
      * @throws \yii\db\Exception
+     * @throws \yii\base\Exception
      */
     public function loadEdi(string $compnentName = null): void
     {

@@ -3,7 +3,7 @@
 namespace d3yii2\d3edi\models;
 
 use d3yii2\d3edi\dictionaries\EdiMessageTypeDictionary;
-use \d3yii2\d3edi\models\base\EdiMessageType as BaseEdiMessageType;
+use d3yii2\d3edi\models\base\EdiMessageType as BaseEdiMessageType;
 
 /**
  * This is the model class for table "edi_message_type".

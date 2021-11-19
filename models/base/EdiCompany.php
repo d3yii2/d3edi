@@ -31,18 +31,6 @@ abstract class EdiCompany extends \yii\db\ActiveRecord
         return 'edi_company';
     }
 
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        $behaviors = [
-        ];
-        return $behaviors;
-    }
-
-
     /**
      * @inheritdoc
      */

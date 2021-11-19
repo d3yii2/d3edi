@@ -9,6 +9,7 @@ use d3yii2\d3edi\dictionaries\EdiCompanyDictionary;
 use d3yii2\d3edi\dictionaries\EdiMessageTypeDictionary;
 use d3yii2\d3edi\models\EdiMessage;
 use EDI\Reader;
+use Exception;
 use yii\helpers\VarDumper;
 
 class MessageLogic
@@ -17,7 +18,8 @@ class MessageLogic
     /**
      * @param string $ediMessage
      * @param string $fileName
-     * @throws D3ActiveRecordException
+     * @param string|null $compnentName
+     * @throws \d3system\exceptions\D3ActiveRecordException
      */
     public function saveIn(
         string $ediMessage,
@@ -41,7 +43,7 @@ class MessageLogic
         $model->preperation_time = $r->readUNBDateTimeOfPreparation();
         $model->messageReferenceNumber = $r->readUNHmessageNumber();
         if(!$unhId = $r->readUNHmessageType()){
-            throw new \Exception('Can not find UNH segment. Error. ' . VarDumper::dumpAsString($r->errors()));
+            throw new Exception('Can not find UNH segment. Error. ' . VarDumper::dumpAsString($r->errors()));
         }
         $model->message_type_id = EdiMessageTypeDictionary::getIdByName($unhId);
         $model->messageRelease = $r->readUNHmessageRealise();

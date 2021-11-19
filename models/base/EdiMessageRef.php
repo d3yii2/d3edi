@@ -32,18 +32,6 @@ abstract class EdiMessageRef extends \yii\db\ActiveRecord
         return 'edi_message_ref';
     }
 
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        $behaviors = [
-        ];
-        return $behaviors;
-    }
-
-
     /**
      * @inheritdoc
      */

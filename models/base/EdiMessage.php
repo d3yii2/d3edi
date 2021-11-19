@@ -59,13 +59,7 @@ abstract class EdiMessage extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        $behaviors = [
-        ];
-        $behaviors = array_merge(
-            $behaviors,
-            D3DateTimeBehavior::getConfig(['read_time','preperation_time'])
-        );
-        return $behaviors;
+        return D3DateTimeBehavior::getConfig(['read_time','preperation_time']);
     }
 
 

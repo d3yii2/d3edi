@@ -33,17 +33,6 @@ abstract class EdiMessageType extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
-        $behaviors = [
-        ];
-        return $behaviors;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [

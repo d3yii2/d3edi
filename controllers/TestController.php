@@ -21,6 +21,7 @@ class TestController extends D3CommandController
      * default action
      * @param string $fileName
      * @return int
+     * @throws \yii\base\Exception
      */
     public function actionIndex(string $fileName): int
     {
