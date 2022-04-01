@@ -9,8 +9,10 @@ use d3yii2\d3edi\logic\MessageLogic;
 use EDI\Reader;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
+use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use yii\console\Controller;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 
@@ -56,6 +58,9 @@ class MessageProcessing extends Component
 
     /** @var string remote outbond directory */
     public $remoteOutbondDir;
+
+    /** @var string remote inbound directory */
+    public $remoteInboundDir;
 
     /** @var string inbound new directory path */
     public $localUploadInboundNewDir;
@@ -149,16 +154,38 @@ class MessageProcessing extends Component
         }
     }
 
-    private function out(String $message){
-        $this->commandController->out($message);
+    /**
+     * @throws \yii\base\Exception
+     */
+    public function putFileToFtp(string $data, $fileName): void
+    {
+        $sftp = $this->sftp;
+        if(!$sftp->chdir($this->remoteInboundDir)){
+            throw new Exception('Can not change directory to inbound');
+        }
+        if (!$sftp->put($fileName,$data)) {
+            throw new Exception('Can not save file to FTP server');
+        }
     }
 
-    public function getNewFiles()
+    /**
+     * output only on command line
+     * @param String $message
+     * @return void
+     */
+    private function out(String $message): void
+    {
+        if (is_a($this->commandController , Controller::class)){
+            $this->commandController->out($message);
+        }
+    }
+
+    public function getNewFiles(): array
     {
         return FileHelper::findFiles($this->localUploadInboundNewDir, ['only' => ['*.edi','*.EDI']]);
     }
 
-    public function moveFileToProcessedDirectory(string $fileName)
+    public function moveFileToProcessedDirectory(string $fileName): void
     {
         rename($fileName, $this->getUpladInboundProcessedFilePath($fileName));
     }
@@ -181,7 +208,7 @@ class MessageProcessing extends Component
             $this->out(' ' . basename($fileName));
             $ediMessage = file_get_contents($fileName);
             foreach(Reader::splitMultiMessage($ediMessage) as $message) {
-                if(!$transaction = \Yii::$app->db->beginTransaction()){
+                if(!$transaction = Yii::$app->db->beginTransaction()){
                     throw new \yii\db\Exception('Can not init transaction');
                 }
                 try {
@@ -191,8 +218,8 @@ class MessageProcessing extends Component
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     $this->out('Problem with EDI loading to DB: ' . $e->getMessage());
-                    \Yii::error('Problem with EDI loading to DB: ' . $e->getMessage());
-                    \Yii::error($e->getTraceAsString());
+                    Yii::error('Problem with EDI loading to DB: ' . $e->getMessage());
+                    Yii::error($e->getTraceAsString());
                 }
             }
             $this->moveFileToProcessedDirectory($fileName);
